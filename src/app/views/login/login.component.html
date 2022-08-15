@@ -1,0 +1,77 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="card-group">
+            <div class="card p-4">
+              <div class="card-body">
+                <form>
+                  <h1>Login</h1>
+                  <p class="text-muted">Sign In to your account</p>
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input type="text" id="parcareLoginField" class="form-control" [value]="username" (keyup)='username=$event.target.value' placeholder="Username" autocomplete="username" required>
+                  </div>
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" id="parcarePassField" class="form-control" [value]="pw" (keyup)='pw=$event.target.value' placeholder="Password" autocomplete="current-password" required>
+                  </div>
+
+                  <!-- error message -->
+                  <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
+                    <div class="col-12" style="color: #f86c6b;">
+                      {{errorMessage}}
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-6">
+                      <button (click)='onLoginClick()' [disabled]="username.length === 0 || pw.length ===0" type="button" class="btn btn-primary px-4" >Login</button>
+                    </div>
+                    <div class="col-6 text-right">
+                      <button type="button" class="btn btn-link px-0">Forgot password?</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            
+            <!-- <div class="card text-white bg-primary py-5 d-md-down-none" style="width:44%; display: none;">
+              <div class="card-body text-center">
+                <div>
+                  <h2>Sign up</h2>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  <button type="button" class="btn btn-primary active mt-3">Register Now!</button>
+                </div>
+              </div>
+            </div> -->
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- loader -->
+<div *ngIf="activateLoader" 
+      style="z-index: 1111;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      opacity: 70%;">
+  <img alt="nodata" src="../../../assets/img/spinner.gif" style="width: 200px; margin: 20px;" />
+</div>

@@ -1,0 +1,212 @@
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { navItems } from '../../_nav_parcare';
+import { ApiService } from '../../api/api.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+
+@Component({
+  selector: 'app-parcaredash',
+  templateUrl: './parcaredash.component.html',
+  styleUrls: ['./parcaredash.component.scss']
+})
+export class ParcaredashComponent implements OnInit {
+
+  @ViewChild('dangerModal') public dangerModal: ModalDirective;
+  @ViewChild('searchModal') public searchModal: ModalDirective;
+  @ViewChild('infoModal') public infoModal: ModalDirective;
+
+  constructor(
+    private apiService: ApiService
+  ) { }
+
+  public sidebarMinimized = false;
+  public navItems = navItems;
+  public tableData = [];
+  public isLoading = false;
+  public activateLoader = false;
+  public showList = true;
+  public toDeleteEntity = null;
+  public errorMessage = null;
+
+  // params
+  public toExclude = false;
+  public toExcludeEntity = null;
+  public modalRegistrationNr = "";
+
+  // lists
+  public transportTypes = [];
+  public places = [];
+  // form
+  public dateTime = new Date();
+  public reason = "";
+  public type = "";
+  public registrationNr = "";
+  public loadingPoint = "";
+  public unloadingPoint = "";
+
+  public transportTypeID = null;
+  public placeID = null;
+
+  toggleMinimize(e) {
+    this.sidebarMinimized = e;
+  }
+
+  async ngOnInit() {
+    // init of data
+    this.getTableData();
+  }
+
+  // getting the data
+  public async getTableData() {
+    this.isLoading = true;
+    this.errorMessage = null;
+
+    try {
+      const res = await this.apiService.getCarFn().toPromise();
+      if(res.data && res.data.length > 0) res.data.map(r => this.adjustDate(r));
+      this.tableData = res.data;
+      const t = await this.apiService.getTransportTypeFn().toPromise();
+      this.transportTypes = t.data;
+      const p = await this.apiService.getPlaceFn().toPromise();
+      this.places = p.data;
+
+      // console.log(this.tableData);
+      this.isLoading = false;
+    }
+    catch(e) {
+      console.log(e);
+      this.errorMessage = e.error.error || "A intervenit o eroare";
+      this.isLoading = false;
+    }
+  }
+
+  // adjusting the date format
+  public adjustDate(entity: any) {
+    if(entity.CreatedAt) entity.CreatedAt = new Date(entity.CreatedAt).toLocaleString();
+    if(entity.DateTime)  entity.DateTime  = new Date(entity.DateTime).toLocaleString();
+    if(entity.UpdatedAt) entity.UpdatedAt = new Date(entity.UpdatedAt).toLocaleString();
+    if(entity.DeletedAt) entity.DeletedAt = new Date(entity.DeletedAt).toLocaleString();
+  }
+
+  // function to add entity (showing the input)
+  public async addEntity() {
+    this.activateLoader = true;
+    this.errorMessage = null;
+
+    try {
+      const res = await this.apiService.addCarFn(this.dateTime, this.reason, this.type, this.transportTypeID, this.registrationNr, this.loadingPoint, this.placeID, this.unloadingPoint).toPromise();
+      if(res && res.ID) {
+        this.onReset();
+        this.showList = true;
+        this.getTableData();
+      }
+      this.activateLoader = false;
+    }
+    catch(e) {
+      console.log(e);
+      this.errorMessage = e.error.error || "A intervenit o eroare";
+      this.activateLoader = false;
+    }
+  }
+
+  // delete entity trigger the modal
+  public deleteEntity(entity) {
+    this.toDeleteEntity = entity;
+    this.dangerModal.show();
+  }
+
+  // delete entity confirmed
+  public async deleteConfirmed() {
+    this.dangerModal.hide();
+    this.activateLoader = true;
+    this.errorMessage = null;
+
+    try {
+      const res = await this.apiService.deleteCarFn(this.toDeleteEntity.ID).toPromise();
+      if(res) {
+        this.toDeleteEntity = null;
+        this.getTableData();
+      }
+      this.activateLoader = false;
+    }
+    catch(e) {
+      console.log(e);
+      this.errorMessage = e.error.error || "A intervenit o eroare";
+      this.activateLoader = false;
+    }
+  }
+
+  // trigger for search modal
+  public onSearchNumber(toExclude) {
+    this.modalRegistrationNr = "";
+    this.toExclude = false;
+    this.toExcludeEntity = null;
+    this.searchModal.show();
+
+    if(toExclude) this.toExclude = true;
+  }
+
+  // searching based on registration number
+  public async triggerSearch(entity) {
+    this.searchModal.hide();
+    this.toExcludeEntity = null;
+
+    if(entity) { // from the list
+      this.toExclude = true;
+      this.toExcludeEntity = entity;
+      this.infoModal.show();
+    }
+    else { // searching by number
+      this.activateLoader = true;
+      this.errorMessage = null;
+  
+      try {
+        const res = await this.apiService.findRegistrationNoFn(this.modalRegistrationNr).toPromise();
+        if(res) {
+          this.adjustDate(res.data);
+          this.toExcludeEntity = res.data;
+          this.infoModal.show();
+        }
+        this.activateLoader = false;
+      }
+      catch(e) {
+        console.log(e);
+        this.errorMessage = e.error.error || "A intervenit o eroare";
+        this.activateLoader = false;
+      }
+    }
+  }
+
+  // exclude car
+  public async onExclude() {
+    this.infoModal.hide();
+    this.activateLoader = true;
+    this.errorMessage = null;
+
+    try {
+      const res = await this.apiService.excludeCarFn(this.toExcludeEntity.ID).toPromise();
+      if(res) {
+        this.toExcludeEntity = null;
+        this.getTableData();
+      }
+      this.activateLoader = false;
+    }
+    catch(e) {
+      console.log(e);
+      this.errorMessage = e.error.error || "A intervenit o eroare";
+      this.activateLoader = false;
+    }
+  }
+
+  // reset the form
+  public onReset() {
+    this.dateTime = new Date();
+    this.transportTypeID = null;
+    this.placeID = null;
+    this.reason = "";
+    this.type = "";
+    this.registrationNr = "";
+    this.loadingPoint = "";
+    this.unloadingPoint = "";
+  }
+
+}

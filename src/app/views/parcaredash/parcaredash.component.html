@@ -1,0 +1,326 @@
+<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}" [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+    [sidebarToggler]="'lg'">
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Users</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Settings</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+    </ul>
+</app-header>
+<div class="app-body">
+    <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+        <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+        <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
+    <main class="main">
+
+        <!-- list container -->
+        <div class="container-fluid" *ngIf="showList">
+
+            <div class="top-container">
+                <h4>Parcare Orhei - Pagina de administrare</h4>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă</button>
+            </div>
+
+            <div class="top-container">
+                <button type="button" class="btn btn-secondary" (click)="onSearchNumber()">Caută Automobil</button>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă Automobil</button>
+                <button type="button" class="btn btn-success" (click)="onSearchNumber(true)">Eliberează Automobil</button>
+            </div>
+
+            <!-- loader -->
+            <div *ngIf="isLoading" style="display: flex;
+            flex-direction: column;
+            margin: 50px 0;
+            align-items: center;
+            justify-content: center;
+            background: #ff814c;
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;">
+                <h5>Se încarcă...</h5>
+                <img alt="loader" src="../../../../assets/img/send2.gif" style="width: 200px;" />
+            </div>
+
+            <!-- if no data -->
+            <div *ngIf="!isLoading && tableData.length === 0" class="data-container">
+                <img alt="nodata" src="../../../../assets/img/not-found.png" style="width: 100px; margin: 20px;" />
+                <h5>Nu sunt date în BD</h5>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă Automobil</button>
+            </div>
+
+            <!-- if no data -->
+
+            <div *ngIf="!isLoading && tableData.length  > 0" class="data-container">
+                <div class="card-body" style="width: 100%;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Eliberează</th>
+                                <th>Număr</th>
+                                <th>Marcă</th>
+                                <th>Preluat</th>
+                                <th>De unde</th>
+                                <th>Motiv</th>
+                                <th>Unde se află</th>
+                                <th>Preț</th>
+                                <th style="text-align: right;">Șterge</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr *ngFor="let entity of tableData">
+                                <td *ngIf="entity.Active" style="text-align: left;">
+
+                                </td>
+                                <td *ngIf="entity.Active">{{entity.no_registration}}</td>
+                                <td *ngIf="entity.Active">{{entity.type}}</td>
+                                <td *ngIf="entity.Active">{{entity.date_time}}</td>
+                                <td *ngIf="entity.Active">{{entity.loading_point}}</td>
+                                <td *ngIf="entity.Active">{{entity.reason}}</td>
+                                <td *ngIf="entity.Active">{{entity.unloading_point}}</td>
+                                <td *ngIf="entity.Active">{{entity.Price}}</td>
+                                <td style="text-align: right;" *ngIf="entity.Active">
+
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- error message -->
+                <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
+                    <div class="col-12" style="color: #f86c6b;">
+                        {{errorMessage}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- end list container -->
+
+        <!-- input container -->
+        <div class="container-fluid" *ngIf="!showList">
+
+            <div class="top-container">
+                <h4>Adaugă o entitate nouă</h4>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Înapoi</button>
+            </div>
+
+            <!-- input container -->
+            <div class="data-container">
+                <div class="card" style="width: 100%;">
+                    <div class="card-header">
+                        <strong>Entitate nouă</strong>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="" method="post">
+
+                            <div class="form-group row">
+                                <label class="col-md-3 col-form-label" for="date-input">Data/ora preluării</label>
+                                <div class="col-md-9">
+                                    <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" class="form-control" [value]="dateTime" (change)='dateTime=$event.target.value' id="date-input" type="text" name="date-input" placeholder="date">
+                                    <owl-date-time #dt11></owl-date-time>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reason">Proces Verbal de ridicare si aducere la parcarea speciala Nr actului VEH 01</label>
+                                <input type="text" placeholder="Veh 01" [value]="reason" (keyup)='reason=$event.target.value' class="form-control" id="reason" name="reason" autocomplete="reason">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Nr. actului Veh 01 format din cifre de la 6 pina la 8</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="carType">Marca automobilului</label>
+                                <input type="text" placeholder="Toyota, BMW, Audi ..." [value]="type" (keyup)='type=$event.target.value' class="form-control" id="carType" name="carType" autocomplete="carType">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți marca automobilului</span>
+                            </div>
+
+                            <div class="form-group row" *ngIf="transportTypes.length > 0">
+                                <label class="col-md-3 col-form-label" for="select1">Tipul transportului</label>
+                                <div class="col-md-9">
+                                    <select id="select1" name="select1" class="form-control" [value]="transportTypeID" (change)='transportTypeID=$event.target.value'>
+                          <option value="null">Selectați tipul unității de transport</option>
+                          <option *ngFor="let entity of transportTypes" value="{{entity.ID}}">{{entity.type}}</option>
+                        </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="registrationNr">Numărul de înregistrare</label>
+                                <input type="text" placeholder="AAA 001" max="8" maxlength="8" [value]="registrationNr" (keyup)='registrationNr=$event.target.value' class="form-control" id="registrationNr" name="registrationNr" autocomplete="registrationNr">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți numărul de înregistrare</span>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loadingPoint">Adresa preluării</label>
+                                <input type="text" placeholder="str. Cantemir 14 ..." [value]="loadingPoint" (keyup)='loadingPoint=$event.target.value' class="form-control" id="loadingPoint" name="loadingPoint" autocomplete="loadingPoint">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți de unde a fost preluat automobilul</span>
+                            </div>
+
+                            <div class="form-group row" *ngIf="places.length > 0">
+                                <label class="col-md-3 col-form-label" for="select1">Raza (distanță)</label>
+                                <div class="col-md-9">
+                                    <select id="select1" name="select1" class="form-control" [value]="placeID" (change)='placeID=$event.target.value'>
+                          <option value="null">Selectați raza (distanța)</option>
+                          <option *ngFor="let entity of places" value="{{entity.ID}}">{{entity.name}}</option>
+                        </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="unloadingPoint">Adresa plasării</label>
+                                <input type="text" placeholder="Baza ..." [value]="unloadingPoint" (keyup)='unloadingPoint=$event.target.value' class="form-control" id="unloadingPoint" name="unloadingPoint" autocomplete="unloadingPoint">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți unde a fost plasat automobilul</span>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="card-footer" style="display: flex; justify-content: space-between; width: 100%;">
+                        <button type="reset" class="btn btn-md btn-danger" (click)="onReset()"><i class="fa fa-ban"></i>  Reset</button>
+                        <button type="submit" class="btn btn-md btn-success" [disabled]="!dateTime || reason.length === 0 || type.length === 0 || registrationNr.length < 4 || loadingPoint.length === 0 || unloadingPoint.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
+                    </div>
+
+                </div>
+
+                <!-- error message -->
+                <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
+                    <div class="col-12" style="color: #f86c6b;">
+                        {{errorMessage}}
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+        <!-- end input container -->
+
+    </main>
+
+    <!-- modal -->
+    <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-danger" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmați ștergerea entității</h4>
+                    <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <p>Sunteți sigur că vreți să ștergeți entitatea dată?</p>
+                    <strong *ngIf="toDeleteEntity">{{toDeleteEntity.type}}</strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Anulează</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteConfirmed()">Șterge</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- modal -->
+    <div bsModal #searchModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-primary" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Căutare după numărul de înmatriculare</h4>
+                    <button type="button" class="close" (click)="searchModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+                <div class="modal-body">
+                    <p>Introduceți numărul de înmatriculare</p>
+
+                    <div class="form-group">
+                        <label for="registrationNr">Numărul de înregistrare</label>
+                        <input type="text" placeholder="AAA 001" max="8" maxlength="8" [value]="modalRegistrationNr" (keyup)='modalRegistrationNr=$event.target.value' class="form-control" id="registrationNr" name="registrationNr" autocomplete="registrationNr">
+                        <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți numărul de înregistrare</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="searchModal.hide()">Anulează</button>
+                    <button type="button" class="btn btn-primary" [disabled]="modalRegistrationNr.length < 4" (click)="triggerSearch(null)">Caută</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+    <!-- modal -->
+    <div bsModal #infoModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-success" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Informație despre automobil</h4>
+                    <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+                </div>
+
+                <div class="modal-body" *ngIf="toExcludeEntity">
+                    <p>Număr: <strong>{{toExcludeEntity.no_registration}}</strong></p>
+                    <p>Marcă: <strong>{{toExcludeEntity.type}}</strong></p>
+                    <p>Preluat: <strong>{{toExcludeEntity.date_time}}</strong></p>
+                    <p>De unde: <strong>{{toExcludeEntity.loading_point}}</strong></p>
+                    <p>Motiv: <strong>{{toExcludeEntity.reason}}</strong></p>
+                    <p>Unde se află: <strong>{{toExcludeEntity.loading_point}}</strong></p>
+                    <p>Preț: <strong>{{toExcludeEntity.Price}}</strong></p>
+                </div>
+
+                <div class="modal-body" *ngIf="!toExcludeEntity">
+                    <p>Nu a fost găsită informație despre acest automobil!</p>
+                    <p>Număr de înmatriculare introdus: <strong>{{modalRegistrationNr}}</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="registrationNr">Numărul de înregistrare</label>
+                    <input type="text" placeholder="AAA 001" max="8" maxlength="8" [value]="modalRegistrationNr" (keyup)='modalRegistrationNr=$event.target.value' class="form-control" id="registrationNr" name="registrationNr" autocomplete="registrationNr">
+                    <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți numărul de înregistrare</span>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" (click)="infoModal.hide()">Închide</button>
+                    <button type="button" *ngIf="toExclude" class="btn btn-success" (click)="onExclude()">Eliberează</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+</div>
+
+<!-- loader -->
+<div *ngIf="activateLoader" style="z-index: 1111;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      opacity: 70%;">
+    <img alt="nodata" src="../../../../assets/img/spinner.gif" style="width: 200px; margin: 20px;" />
+</div>
