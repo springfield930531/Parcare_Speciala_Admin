@@ -63,34 +63,33 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th style="text-align: left;">Eliberează</th>
                                 <th>Număr</th>
                                 <th>Marcă</th>
                                 <th>Preluat</th>
                                 <th>De unde</th>
                                 <th>Motiv</th>
                                 <th>Unde se află</th>
-                                <th>Preț</th>
-                                <th style="text-align: right;">Șterge</th>
+                                <th>Autoritatea responsabila</th>
+                                <th>Pret Transportare</th>
+                                <th>Pret Parcare</th>
+                                <th>Pret Total</th>
                             </tr>
                         </thead>
 
                         <tbody>
 
                             <tr *ngFor="let entity of tableData">
-                                <td *ngIf="entity.Active" style="text-align: left;">
 
-                                </td>
-                                <td *ngIf="entity.Active">{{entity.no_registration}}</td>
-                                <td *ngIf="entity.Active">{{entity.type}}</td>
-                                <td *ngIf="entity.Active">{{entity.date_time}}</td>
-                                <td *ngIf="entity.Active">{{entity.loading_point}}</td>
-                                <td *ngIf="entity.Active">{{entity.reason}}</td>
-                                <td *ngIf="entity.Active">{{entity.unloading_point}}</td>
-                                <td *ngIf="entity.Active">{{entity.Price}}</td>
-                                <td style="text-align: right;" *ngIf="entity.Active">
-
-                                </td>
+                                <td *ngIf="entity">{{entity.no_registration}}</td>
+                                <td *ngIf="entity">{{entity.type}}</td>
+                                <td *ngIf="entity">{{entity.date_time}}</td>
+                                <td *ngIf="entity">{{entity.loading_point}}</td>
+                                <td *ngIf="entity">{{entity.reason}}</td>
+                                <td *ngIf="entity">{{entity.unloading_point}}</td>
+                                <td *ngIf="entity">{{entity.loading_authorityy}}</td>
+                                <td *ngIf="entity">{{entity.loading_price}}</td>
+                                <td *ngIf="entity">{{entity.parking_price}}</td>
+                                <td *ngIf="entity">{{entity.price}}</td>
                             </tr>
 
                         </tbody>
@@ -130,7 +129,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="date-input">Data/ora preluării</label>
                                 <div class="col-md-9">
-                                    <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" class="form-control" [value]="dateTime" (change)='dateTime=$event.target.value' id="date-input" type="text" name="date-input" placeholder="date">
+                                    <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [value]="date_time" (change)='date_time=$event.target.value' class="form-control" id="date-input" type="text" name="date-input" placeholder="date">
                                     <owl-date-time #dt11></owl-date-time>
                                 </div>
                             </div>
@@ -139,6 +138,11 @@
                                 <label for="reason">Proces Verbal de ridicare si aducere la parcarea speciala Nr actului VEH 01</label>
                                 <input type="text" placeholder="Veh 01" [value]="reason" (keyup)='reason=$event.target.value' class="form-control" id="reason" name="reason" autocomplete="reason">
                                 <span class="help-block" style="font-style: italic; font-size: 12px;">Nr. actului Veh 01 format din cifre de la 6 pina la 8</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="loading_authority">Autoritatea responsabile de care a evacuat automobilul</label>
+                                <input type="text" placeholder="Veh 01" [value]="loading_authority" (keyup)='loading_authority=$event.target.value' class="form-control" id="loading_authority" name="loading_authority" autocomplete="loading_authority">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Denumirea autorității care a permis evacuare ex: INSP Falesti</span>
                             </div>
 
                             <div class="form-group">
@@ -190,7 +194,7 @@
 
                     <div class="card-footer" style="display: flex; justify-content: space-between; width: 100%;">
                         <button type="reset" class="btn btn-md btn-danger" (click)="onReset()"><i class="fa fa-ban"></i>  Reset</button>
-                        <button type="submit" class="btn btn-md btn-success" [disabled]="!dateTime || reason.length === 0 || type.length === 0 || registrationNr.length < 4 || loadingPoint.length === 0 || unloadingPoint.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
+                        <button type="submit" class="btn btn-md btn-success" [disabled]="!date_time || reason.length === 0 || type.length === 0 || registrationNr.length < 4 || loadingPoint.length === 0 || unloadingPoint.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
                     </div>
 
                 </div>
@@ -284,6 +288,7 @@
                     <p>Motiv: <strong>{{toExcludeEntity.reason}}</strong></p>
                     <p>Unde se află: <strong>{{toExcludeEntity.loading_point}}</strong></p>
                     <p>Preț: <strong>{{toExcludeEntity.Price}}</strong></p>
+
                 </div>
 
                 <div class="modal-body" *ngIf="!toExcludeEntity">

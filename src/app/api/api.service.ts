@@ -12,7 +12,7 @@ export class ApiService {
       private httpClient: HttpClient
   ){}
 
-  private hostIP = "http://64.225.76.32:8090";
+  private hostIP = 'http://134.209.90.166:8090';
 
   // TYPES ------------------------------------------------------------------------------------------------------
 
@@ -72,8 +72,8 @@ export class ApiService {
 
   // CARS ---------------------------------------------------------------------------------------------------------
 
-  public addCarFn(date_time: any, reason: any, type: any, transport_type_id: any, no_registration: any, loading_point: any, place_id: any, unloading_point: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/car`, {date_time: date_time, reason: reason, type: type, transport_type_id: parseInt(transport_type_id), no_registration: no_registration, loading_point: loading_point, place_id: parseInt(place_id), unloading_point: unloading_point})
+  public addCarFn(date_time: any, reason: any, loading_authority: any, type: any, transport_type_id: any, no_registration: any, loading_point: any, place_id: any, unloading_point: any): Observable<any> {
+    return this.httpClient.post(`${this.hostIP}/admin/car`, {date_time: date_time, reason: reason, loading_authority: loading_authority, type: type, transport_type_id: parseInt(transport_type_id), no_registration: no_registration, loading_point: loading_point, place_id: parseInt(place_id), unloading_point: unloading_point})
   }
 
   public getCarFn(): Observable<any> {

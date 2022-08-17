@@ -36,8 +36,9 @@ export class ParcaredashComponent implements OnInit {
   public transportTypes = [];
   public places = [];
   // form
-  public dateTime = new Date();
+  public date_time = new Date();
   public reason = "";
+  public loading_authority = "";
   public type = "";
   public registrationNr = "";
   public loadingPoint = "";
@@ -82,7 +83,7 @@ export class ParcaredashComponent implements OnInit {
   // adjusting the date format
   public adjustDate(entity: any) {
     if(entity.CreatedAt) entity.CreatedAt = new Date(entity.CreatedAt).toLocaleString();
-    if(entity.DateTime)  entity.DateTime  = new Date(entity.DateTime).toLocaleString();
+    if(entity.date_time)  entity.date_time  = new Date(entity.date_time).toLocaleString();
     if(entity.UpdatedAt) entity.UpdatedAt = new Date(entity.UpdatedAt).toLocaleString();
     if(entity.DeletedAt) entity.DeletedAt = new Date(entity.DeletedAt).toLocaleString();
   }
@@ -93,7 +94,7 @@ export class ParcaredashComponent implements OnInit {
     this.errorMessage = null;
 
     try {
-      const res = await this.apiService.addCarFn(this.dateTime, this.reason, this.type, this.transportTypeID, this.registrationNr, this.loadingPoint, this.placeID, this.unloadingPoint).toPromise();
+      const res = await this.apiService.addCarFn(this.date_time, this.reason,this.loading_authority, this.type, this.transportTypeID, this.registrationNr, this.loadingPoint, this.placeID, this.unloadingPoint).toPromise();
       if(res && res.ID) {
         this.onReset();
         this.showList = true;
@@ -199,10 +200,11 @@ export class ParcaredashComponent implements OnInit {
 
   // reset the form
   public onReset() {
-    this.dateTime = new Date();
+    this.date_time = new Date();
     this.transportTypeID = null;
     this.placeID = null;
     this.reason = "";
+    this.loading_authority = "";
     this.type = "";
     this.registrationNr = "";
     this.loadingPoint = "";
