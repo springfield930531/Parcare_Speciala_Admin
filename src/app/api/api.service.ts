@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -9,15 +9,15 @@ import { map } from 'rxjs/operators';
 export class ApiService {
 
   constructor(
-      private httpClient: HttpClient
-  ){}
+    private httpClient: HttpClient
+  ) { }
 
   private hostIP = "http://64.225.76.32:8090";
 
   // TYPES ------------------------------------------------------------------------------------------------------
 
   public addTransportTypeFn(type: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/transportType`, {type: type})
+    return this.httpClient.post(`${this.hostIP}/admin/transportType`, { type: type })
   }
 
   public getTransportTypeFn(): Observable<any> {
@@ -31,7 +31,7 @@ export class ApiService {
   // PLACES ------------------------------------------------------------------------------------------------------
 
   public addPlaceFn(Name: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/place`, {Name: Name})
+    return this.httpClient.post(`${this.hostIP}/admin/place`, { Name: Name })
   }
 
   public getPlaceFn(): Observable<any> {
@@ -45,7 +45,7 @@ export class ApiService {
   // PRICES ------------------------------------------------------------------------------------------------------
 
   public addPriceFn(Price: any, transport_type_id: any, place_id: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/price`, {Price: parseInt(Price), transport_type_id: parseInt(transport_type_id), place_id: parseInt(place_id)})
+    return this.httpClient.post(`${this.hostIP}/admin/price`, { Price: parseInt(Price), transport_type_id: parseInt(transport_type_id), place_id: parseInt(place_id) })
   }
 
   public getPriceFn(): Observable<any> {
@@ -59,7 +59,7 @@ export class ApiService {
   // STORAGE PRICES -----------------------------------------------------------------------------------------------
 
   public addStoragePriceFn(transport_type_id: any, period_1: any, period_2: any, period_3: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/storage`, {transport_type_id: parseInt(transport_type_id), period_1: parseInt(period_1), period_2: parseInt(period_2), period_3: parseInt(period_3)})
+    return this.httpClient.post(`${this.hostIP}/admin/storage`, { transport_type_id: parseInt(transport_type_id), period_1: parseInt(period_1), period_2: parseInt(period_2), period_3: parseInt(period_3) })
   }
 
   public getStoragePriceFn(): Observable<any> {
@@ -73,7 +73,7 @@ export class ApiService {
   // CARS ---------------------------------------------------------------------------------------------------------
 
   public addCarFn(date_time: any, reason: any, type: any, transport_type_id: any, no_registration: any, loading_point: any, place_id: any, unloading_point: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/car`, {date_time: date_time, reason: reason, type: type, transport_type_id: parseInt(transport_type_id), no_registration: no_registration, loading_point: loading_point, place_id: parseInt(place_id), unloading_point: unloading_point})
+    return this.httpClient.post(`${this.hostIP}/admin/car`, { date_time: date_time, reason: reason, type: type, transport_type_id: parseInt(transport_type_id), no_registration: no_registration, loading_point: loading_point, place_id: parseInt(place_id), unloading_point: unloading_point })
   }
 
   public getCarFn(): Observable<any> {
@@ -88,6 +88,14 @@ export class ApiService {
     return this.httpClient.get(`${this.hostIP}/admin/car/${id}`)
   }
 
+  public getCarReport(durationObj) {
+    var reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('parcareUserToken')
+    });
+    return this.httpClient.post(`http://134.209.90.166:8090/admin/report`, durationObj, { headers: reqHeader })
+  }
+
   // RegistrationNo ------------------------------------------------------------------------------------------------
 
   public findRegistrationNoFn(number: any): Observable<any> {
@@ -96,15 +104,15 @@ export class ApiService {
 
   // LOGIN + USERS ----------------------------------------------------------------------------------------------
   public loginFn(Username: any, Password: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/login`, {Username: Username, Password: Password})
+    return this.httpClient.post(`${this.hostIP}/login`, { Username: Username, Password: Password })
   }
 
   public addUserFn(Name: any, Email: any, Password: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/users`, {Name: Name, Password: Password, Email: Email})
+    return this.httpClient.post(`${this.hostIP}/admin/users`, { Name: Name, Password: Password, Email: Email })
   }
 
   public updateUserFn(UserID: any, Name: any, Email: any, Password: any): Observable<any> {
-    return this.httpClient.put(`${this.hostIP}/admin/users/${UserID}`, {Name: Name, Password: Password, Email: Email})
+    return this.httpClient.put(`${this.hostIP}/admin/users/${UserID}`, { Name: Name, Password: Password, Email: Email })
   }
 
   public getUsersFn(): Observable<any> {

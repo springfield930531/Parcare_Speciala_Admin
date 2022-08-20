@@ -13,6 +13,7 @@ import { PricesComponent } from './views/parcare-modules/prices/prices.component
 import { StoragePricesComponent } from './views/parcare-modules/storage-prices/storage-prices.component';
 import { TipTransportComponent } from './views/parcare-modules/tip-transport/tip-transport.component';
 import { UsersComponent } from './views/parcare-modules/users/users.component';
+import { ParcareReportingComponent } from './views/parcare-reporting/parcare-reporting.component';
 import { ParcaredashComponent } from './views/parcaredash/parcaredash.component';
 import { RegisterComponent } from './views/register/register.component';
 
@@ -42,6 +43,14 @@ export const routes: Routes = [
     canActivate: [AuthRoutetsGuardService],
     data: {
       title: 'Parcare Orhei'
+    }
+  },
+  {
+    path: 'parcare-reporting',
+    component: ParcareReportingComponent,
+    canActivate: [AuthRoutetsGuardService],
+    data: {
+      title: 'Raportare Parcare Orhei'
     }
   },
   {
@@ -84,7 +93,7 @@ export const routes: Routes = [
       title: 'Parcare Orhei | Redactare Utilizatori'
     }
   },
-  
+
   // deja straine
   {
     path: '',
@@ -131,7 +140,7 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' }) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
