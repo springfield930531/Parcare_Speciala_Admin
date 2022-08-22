@@ -88,13 +88,14 @@ export class ApiService {
     return this.httpClient.get(`${this.hostIP}/admin/car/${id}`)
   }
 // Excell Report ------------------------------------------------------------------------------------------------
-  public getCarReport(durationObj) {
-    var reqHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + localStorage.getItem('parcareUserToken')
-    });
-    return this.httpClient.post(`${this.hostIP}`, durationObj, { headers: reqHeader })
-  }
+public getCarReport(durationObj) {
+  var reqHeader = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer ' + localStorage.getItem('parcareUserToken')
+  });
+  return this.httpClient.post(`http://134.209.90.166:8090/admin/report`, durationObj, { headers: reqHeader })
+}
+
   
   // RegistrationNo ------------------------------------------------------------------------------------------------
 

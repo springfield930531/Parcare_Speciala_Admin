@@ -45,6 +45,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { ParcaredashComponent } from './views/parcaredash/parcaredash.component';
+import { ParcareReportingComponent } from './views/parcare-reporting/parcare-reporting.component';
 import { TipTransportComponent } from './views/parcare-modules/tip-transport/tip-transport.component';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { PlaceComponent } from './views/parcare-modules/place/place.component';
@@ -83,6 +84,7 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
     LoginComponent,
     RegisterComponent,
     ParcaredashComponent,
+    ParcareReportingComponent,
     TipTransportComponent,
     PlaceComponent,
     PricesComponent,
