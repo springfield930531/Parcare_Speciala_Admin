@@ -32,11 +32,11 @@
             <div class="top-container align-items-end">
                 <div class="col-lg-5 d-flex justify-content-between align-items-end">
                     <span class="col-6">
-                        <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="'rangeFrom'" class="form-control" [(ngModel)]="startDateTime" (change)='dateRangeChange($event)' id="start-date-input" type="text" name="start-date-input" placeholder="Select Start Date">
+                        <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="'rangeFrom'" class="form-control" [(value)]="startDateTime" (change)='dateRangeChange($event)' id="start-date-input" type="text" name="start-date-input" placeholder="Select Start Date">
                         <owl-date-time #dt11></owl-date-time>
                     </span>
                     <span class="col-6">
-                        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="'rangeTo'" class="form-control" [(ngModel)]="stopDateTime" (change)='dateRangeChange($event)' id="stop-date-input" type="text" name="stop-date-input" placeholder="Select Stop Date">
+                        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="'rangeTo'" class="form-control" [(value)]="stopDateTime" (change)='dateRangeChange($event)' id="stop-date-input" type="text" name="stop-date-input" placeholder="Select Stop Date">
                         <owl-date-time #dt12></owl-date-time>
                     </span>
                     <span>
@@ -81,6 +81,9 @@
 
             <div *ngIf="!isLoading && tableData.length  > 0" class="data-container">
                 <div class="card-body" style="width: 100%;">
+                    <div class="row justify-content-end d-flex">
+                        <p>Showing {{this.tableData.length}} records !</p>
+                    </div>
                     <table class="table table-striped">
                         <thead>
                             <tr>
