@@ -14,6 +14,7 @@ import { StoragePricesComponent } from './views/parcare-modules/storage-prices/s
 import { TipTransportComponent } from './views/parcare-modules/tip-transport/tip-transport.component';
 import { UsersComponent } from './views/parcare-modules/users/users.component';
 import { ParcaredashComponent } from './views/parcaredash/parcaredash.component';
+import { ParcareReportingComponent } from './views/parcare-reporting/parcare-reporting.component';
 import { RegisterComponent } from './views/register/register.component';
 
 export const routes: Routes = [
@@ -42,6 +43,14 @@ export const routes: Routes = [
     canActivate: [AuthRoutetsGuardService],
     data: {
       title: 'Parcare Orhei'
+    }
+  },
+  {
+    path: 'parcare-reporting',
+    component: ParcareReportingComponent,
+    canActivate: [AuthRoutetsGuardService],
+    data: {
+      title: 'Raportare Parcare Orhei'
     }
   },
   {

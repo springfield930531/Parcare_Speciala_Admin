@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -87,7 +87,15 @@ export class ApiService {
   public excludeCarFn(id: any): Observable<any> {
     return this.httpClient.get(`${this.hostIP}/admin/car/${id}`)
   }
-
+// Excell Report ------------------------------------------------------------------------------------------------
+  public getCarReport(durationObj) {
+    var reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('parcareUserToken')
+    });
+    return this.httpClient.post(`${this.hostIP}`, durationObj, { headers: reqHeader })
+  }
+  
   // RegistrationNo ------------------------------------------------------------------------------------------------
 
   public findRegistrationNoFn(number: any): Observable<any> {

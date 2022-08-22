@@ -1,0 +1,154 @@
+<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}" [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+    [sidebarToggler]="'lg'">
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Users</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Settings</a>
+        </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+    </ul>
+</app-header>
+<div class="app-body">
+    <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+        <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+        <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
+    <main class="main">
+
+        <!-- list container -->
+        <div class="container-fluid" *ngIf="showList">
+
+            <div class="top-container">
+                <h4>Parcare Orhei - Raportare</h4>
+                <!-- <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă</button> -->
+            </div>
+
+            <div class="top-container align-items-end">
+                <div class="col-lg-5 d-flex justify-content-between align-items-end">
+                    <span class="col-6">
+                        <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [selectMode]="'rangeFrom'" class="form-control" [(value)]="startDateTime" (change)='dateRangeChange($event)' id="start-date-input" type="text" name="start-date-input" placeholder="Select Start Date">
+                        <owl-date-time #dt11></owl-date-time>
+                    </span>
+                    <span class="col-6">
+                        <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" [selectMode]="'rangeTo'" class="form-control" [(value)]="stopDateTime" (change)='dateRangeChange($event)' id="stop-date-input" type="text" name="stop-date-input" placeholder="Select Stop Date">
+                        <owl-date-time #dt12></owl-date-time>
+                    </span>
+                    <span>
+                        <button type="button" class="btn btn-primary" (click)="getTableData()">
+                            Search
+                        </button>
+                    </span>
+                </div>
+
+                <!-- <div class="col-lg-2">
+                    <input [owlDateTimeTrigger]="dt12" [owlDateTime]="dt12" class="form-control" [value]="stopDateTime" (change)='stopDateTime=$event.target.value' id="date-input" type="text" name="date-input" placeholder="date">
+                    <owl-date-time #dt12></owl-date-time>
+                  </div> -->
+
+                <div>
+                    <button type="button" class="btn btn-primary" (click)="exportAsExcel()">Export</button>
+                </div>
+            </div>
+
+            <!-- loader -->
+            <div *ngIf="isLoading" style="display: flex;
+            flex-direction: column;
+            margin: 50px 0;
+            align-items: center;
+            justify-content: center;
+            background: #ff814c;
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;">
+                <h5>Se încarcă...</h5>
+                <img alt="loader" src="../../../../assets/img/send2.gif" style="width: 200px;" />
+            </div>
+
+            <!-- if no data -->
+            <div *ngIf="!isLoading && tableData.length === 0" class="data-container">
+                <img alt="nodata" src="../../../../assets/img/not-found.png" style="width: 100px; margin: 20px;" />
+                <h5>Nu sunt date în BD</h5>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă Automobil</button>
+            </div>
+
+            <!-- if no data -->
+
+            <div *ngIf="!isLoading && tableData.length  > 0" class="data-container">
+                <div class="card-body" style="width: 100%;">
+                    <div class="row justify-content-end d-flex">
+                        <p>Showing {{this.tableData.length}} records !</p>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Număr</th>
+                                <th>Marcă</th>
+                                <th>Preluat</th>
+                                <th>Punct de încărcare</th>
+                                <th>Autoritatea de încărcare</th>
+                                <th>Preț de încărcare</th>
+                                <th>Preț</th>
+                                <th>Pret Parcare</th>
+                                <th>Punct de descarcare</th>
+                                <th>Motivul descarcarii</th>
+                                <th>Pret Vanzare</th>
+                                <th>Exclude Data</th>
+                        </thead>
+
+                        <tbody>
+
+                            <tr *ngFor="let entity of tableData">
+                                <td *ngIf="!entity.active">{{entity.no_registration}}</td>
+                                <td *ngIf="!entity.active">{{entity.type}}</td>
+                                <td *ngIf="!entity.active">{{entity.date_time}}</td>
+                                <td *ngIf="!entity.active">{{entity.loading_point}}</td>
+                                <td *ngIf="!entity.active">{{entity.loading_authority}}</td>
+                                <td *ngIf="!entity.active">{{entity.loading_price}}</td>
+                                <td *ngIf="!entity.active">{{entity.price}}</td>
+                                <td *ngIf="!entity.active">{{entity.parking_price}}</td>
+                                <td *ngIf="!entity.active">{{entity.unloading_point}}</td>
+                                <td *ngIf="!entity.active">{{entity.unloading_reason}}</td>
+                                <td *ngIf="!entity.active">{{entity.price_sale}}</td>
+                                <td *ngIf="!entity.active">{{entity.exclude_date}}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- error message -->
+                <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
+                    <div class="col-12" style="color: #f86c6b;">
+                        {{errorMessage}}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- end list container -->
+
+    </main>
+
+</div>
+
+<!-- loader -->
+<div *ngIf="activateLoader" style="z-index: 1111;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #fff;
+      opacity: 70%;">
+    <img alt="nodata" src="../../../../assets/img/spinner.gif" style="width: 200px; margin: 20px;" />
+</div>
