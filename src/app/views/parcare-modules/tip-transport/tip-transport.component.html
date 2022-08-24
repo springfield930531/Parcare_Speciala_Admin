@@ -1,42 +1,35 @@
-<app-header
-  [navbarBrandRouterLink]="['/dashboard']"
-  [fixed]="true"
-  [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}"
-  [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
-  [sidebarToggler]="'lg'"
->
-  <ul class="nav navbar-nav d-md-down-none">
-    <li class="nav-item px-3">
-      <a class="nav-link" href="#">Dashboard</a>
-    </li>
-    <li class="nav-item px-3">
-      <a class="nav-link" href="#">Users</a>
-    </li>
-    <li class="nav-item px-3">
-      <a class="nav-link" href="#">Settings</a>
-    </li>
-  </ul>
-  <ul class="nav navbar-nav ml-auto">
-  </ul>
+<app-header [navbarBrandRouterLink]="['/dashboard']" [fixed]="true" [navbarBrandFull]="{src: 'assets/img/brand/logo.svg', width: 89, height: 25, alt: 'CoreUI Logo'}" [navbarBrandMinimized]="{src: 'assets/img/brand/sygnet.svg', width: 30, height: 30, alt: 'CoreUI Logo'}"
+    [sidebarToggler]="'lg'">
+    <ul class="nav navbar-nav d-md-down-none">
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#">Dashboard</a>
+        </li>
+        <li class="nav-item px-3">
+            <a class="nav-link" href="#/parcare-reporting">Raportare</a>
+            <li class="nav-item px-3">
+                <a class="nav-link" href="#">Settings</a>
+            </li>
+    </ul>
+    <ul class="nav navbar-nav ml-auto">
+    </ul>
 </app-header>
 <div class="app-body">
-  <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
-    <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
-    <app-sidebar-minimizer></app-sidebar-minimizer>
-  </app-sidebar>
-  <main class="main">
+    <app-sidebar #appSidebar [fixed]="true" [display]="'lg'" [minimized]="sidebarMinimized" (minimizedChange)="toggleMinimize($event)">
+        <app-sidebar-nav [navItems]="navItems" [perfectScrollbar] [disabled]="appSidebar.minimized"></app-sidebar-nav>
+        <app-sidebar-minimizer></app-sidebar-minimizer>
+    </app-sidebar>
+    <main class="main">
 
-    <!-- list container -->
-    <div class="container-fluid" *ngIf="showList">
-        
-        <div class="top-container">
-            <h4>Tipuri de transport înregistrate</h4>
-            <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă</button>
-        </div>
+        <!-- list container -->
+        <div class="container-fluid" *ngIf="showList">
 
-        <!-- loader -->
-        <div *ngIf="isLoading" 
-            style="display: flex;
+            <div class="top-container">
+                <h4>Tipuri de transport înregistrate</h4>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă</button>
+            </div>
+
+            <!-- loader -->
+            <div *ngIf="isLoading" style="display: flex;
             flex-direction: column;
             margin: 50px 0;
             align-items: center;
@@ -44,133 +37,134 @@
             background: #ff814c;
             border-radius: 10px;
             padding: 10px;
-            color: #fff;"
-        >
-            <h5>Se încarcă...</h5>
-            <img alt="loader" src="../../../../assets/img/send2.gif" style="width: 200px;" />
-        </div>
+            color: #fff;">
+                <h5>Se încarcă...</h5>
+                <img alt="loader" src="../../../../assets/img/send2.gif" style="width: 200px;" />
+            </div>
 
-        <!-- if no data -->
-        <div *ngIf="!isLoading && tableData.length === 0" class="data-container">
-            <img alt="nodata" src="../../../../assets/img/not-found.png" style="width: 100px; margin: 20px;" />
-            <h5>Nu sunt date în BD</h5>
-            <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă o entitate nouă</button>
-        </div>
+            <!-- if no data -->
+            <div *ngIf="!isLoading && tableData.length === 0" class="data-container">
+                <img alt="nodata" src="../../../../assets/img/not-found.png" style="width: 100px; margin: 20px;" />
+                <h5>Nu sunt date în BD</h5>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Adaugă o entitate nouă</button>
+            </div>
 
-        <!-- if no data -->
-        <div *ngIf="!isLoading && tableData.length > 0" class="data-container">
-            <div class="card-body" style="width: 100%;">
-                <table class="table table-striped">
-                  <thead>
-                    <tr>
-                      <th>Id</th>
-                      <th>Tip</th>
-                      <th style="text-align: right;">Șterge</th>
-                    </tr>
-                  </thead>
+            <!-- if no data -->
+            <div *ngIf="!isLoading && tableData.length > 0" class="data-container">
+                <div class="card-body" style="width: 100%;">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Tip</th>
+                                <th style="text-align: right;">Șterge</th>
+                            </tr>
+                        </thead>
 
-                  <tbody>
+                        <tbody>
 
-                    <tr *ngFor="let entity of tableData">
-                      <td>{{entity.ID}}</td>
-                      <td>{{entity.type}}</td>
-                      <td style="text-align: right;">
-                        <button type="submit" class="btn btn-md btn-danger" (click)="deleteEntity(entity)">X</button>
-                      </td>
-                    </tr>
+                            <tr *ngFor="let entity of tableData">
+                                <td>{{entity.ID}}</td>
+                                <td>{{entity.type}}</td>
+                                <td style="text-align: right;">
+                                    <button type="submit" class="btn btn-md btn-danger" (click)="deleteEntity(entity)">X</button>
+                                </td>
+                            </tr>
 
-                  </tbody>
-                </table>
-              </div>
-
-              <!-- error message -->
-              <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
-                <div class="col-12" style="color: #f86c6b;">
-                  {{errorMessage}}
+                        </tbody>
+                    </table>
                 </div>
-              </div>
+
+                <!-- error message -->
+                <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
+                    <div class="col-12" style="color: #f86c6b;">
+                        {{errorMessage}}
+                    </div>
+                </div>
+
+            </div>
 
         </div>
-
-    </div>
-    <!-- end list container -->
-
-    <!-- input container -->
-    <div class="container-fluid" *ngIf="!showList">
-        
-        <div class="top-container">
-            <h4>Adaugă o entitate nouă</h4>
-            <button type="button" class="btn btn-primary" (click)="showList = !showList">Înapoi</button>
-        </div>
+        <!-- end list container -->
 
         <!-- input container -->
-        <div class="data-container">
-            <div class="card" style="width: 100%;">
-                <div class="card-header">
-                  <strong>Entitate nouă</strong>
-                </div>
+        <div class="container-fluid" *ngIf="!showList">
 
-                <div class="card-body">
-                  <form action="" method="post">
+            <div class="top-container">
+                <h4>Adaugă o entitate nouă</h4>
+                <button type="button" class="btn btn-primary" (click)="showList = !showList">Înapoi</button>
+            </div>
 
-                    <div class="form-group">
-                      <label for="tip">Tip</label>
-                      <input type="text" placeholder="Masina, motocicleta ..." [value]="tipTransportInput" (keyup)='tipTransportInput=$event.target.value' class="form-control" id="tip" name="tip" autocomplete="tip">
-                      <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți tipul transportului</span>
+            <!-- input container -->
+            <div class="data-container">
+                <div class="card" style="width: 100%;">
+                    <div class="card-header">
+                        <strong>Entitate nouă</strong>
                     </div>
-                    
-                  </form>
+
+                    <div class="card-body">
+                        <form action="" method="post">
+
+                            <div class="form-group">
+                                <label for="tip">Tip</label>
+                                <input type="text" placeholder="Masina, motocicleta ..." [value]="tipTransportInput" (keyup)='tipTransportInput=$event.target.value' class="form-control" id="tip" name="tip" autocomplete="tip">
+                                <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți tipul transportului</span>
+                            </div>
+
+                        </form>
+                    </div>
+
+                    <div class="card-footer" style="display: flex; justify-content: space-between; width: 100%;">
+                        <button type="reset" class="btn btn-md btn-danger" (click)="onReset()"><i class="fa fa-ban"></i>  Reset</button>
+                        <button type="submit" class="btn btn-md btn-success" [disabled]="tipTransportInput.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
+                    </div>
+
                 </div>
 
-                <div class="card-footer" style="display: flex; justify-content: space-between; width: 100%;">
-                    <button type="reset" class="btn btn-md btn-danger" (click)="onReset()"><i class="fa fa-ban"></i>  Reset</button>
-                    <button type="submit" class="btn btn-md btn-success" [disabled]="tipTransportInput.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
+                <!-- error message -->
+                <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
+                    <div class="col-12" style="color: #f86c6b;">
+                        {{errorMessage}}
+                    </div>
                 </div>
 
-              </div>
-              
-              <!-- error message -->
-              <div class="row" *ngIf="errorMessage" style="margin-bottom: 10px;">
-                <div class="col-12" style="color: #f86c6b;">
-                  {{errorMessage}}
-                </div>
-              </div>
-              
+            </div>
+
+
         </div>
+        <!-- end input container -->
 
+    </main>
 
-    </div>
-    <!-- end input container -->
-
-  </main>
-
-  <!-- modal -->
-  <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-danger" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Confirmați ștergerea entității</h4>
-          <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+    <!-- modal -->
+    <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-danger" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirmați ștergerea entității</h4>
+                    <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+                </div>
+                <div class="modal-body">
+                    <p>Sunteți sigur că vreți să ștergeți entitatea dată?</p>
+                    <strong *ngIf="toDeleteEntity">{{toDeleteEntity.type}}</strong>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Anulează</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteConfirmed()">Șterge</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
         </div>
-        <div class="modal-body">
-          <p>Sunteți sigur că vreți să ștergeți entitatea dată?</p>
-          <strong *ngIf="toDeleteEntity">{{toDeleteEntity.type}}</strong>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Anulează</button>
-          <button type="button" class="btn btn-danger" (click)="deleteConfirmed()">Șterge</button>
-        </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
-  
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
 </div>
 
 <!-- loader -->
-<div *ngIf="activateLoader" 
-      style="z-index: 1111;
+<div *ngIf="activateLoader" style="z-index: 1111;
       position: fixed;
       top: 0;
       left: 0;
@@ -181,5 +175,5 @@
       align-items: center;
       background: #fff;
       opacity: 70%;">
-  <img alt="nodata" src="../../../../assets/img/spinner.gif" style="width: 200px; margin: 20px;" />
+    <img alt="nodata" src="../../../../assets/img/spinner.gif" style="width: 200px; margin: 20px;" />
 </div>

@@ -2,10 +2,10 @@
     [sidebarToggler]="'lg'">
     <ul class="nav navbar-nav d-md-down-none">
         <li class="nav-item px-3">
-            <a class="nav-link" href="#">Dashboard</a>
+            <a class="nav-link" href="#">Pagina Principala</a>
         </li>
         <li class="nav-item px-3">
-            <a class="nav-link" href="#">Users</a>
+            <a class="nav-link" href="#/parcare-reporting">Raportare</a>
         </li>
         <li class="nav-item px-3">
             <a class="nav-link" href="#">Settings</a>
@@ -86,10 +86,13 @@
                                 <td *ngIf="entity">{{entity.loading_point}}</td>
                                 <td *ngIf="entity">{{entity.reason}}</td>
                                 <td *ngIf="entity">{{entity.unloading_point}}</td>
-                                <td *ngIf="entity">{{entity.loading_authorityy}}</td>
+                                <td *ngIf="entity">{{entity.loading_authority}}</td>
                                 <td *ngIf="entity">{{entity.loading_price}}</td>
                                 <td *ngIf="entity">{{entity.parking_price}}</td>
                                 <td *ngIf="entity">{{entity.price}}</td>
+                                <td style="text-align: right;">
+                                    <button type="submit" class="btn btn-md btn-danger" (click)="deleteEntity(entity)">X</button>
+                                </td>
                             </tr>
 
                         </tbody>
@@ -141,7 +144,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="loading_authority">Autoritatea responsabile de care a evacuat automobilul</label>
-                                <input type="text" placeholder="Veh 01" [value]="loading_authority" (keyup)='loading_authority=$event.target.value' class="form-control" id="loading_authority" name="loading_authority" autocomplete="loading_authority">
+                                <input type="text" placeholder="INSP Balti" [value]="loading_authority" (keyup)='loading_authority=$event.target.value' class="form-control" id="loading_authority" name="loading_authority" autocomplete="loading_authority">
                                 <span class="help-block" style="font-style: italic; font-size: 12px;">Denumirea autorității care a permis evacuare ex: INSP Falesti</span>
                             </div>
 
@@ -188,13 +191,12 @@
                                 <input type="text" placeholder="Baza ..." [value]="unloadingPoint" (keyup)='unloadingPoint=$event.target.value' class="form-control" id="unloadingPoint" name="unloadingPoint" autocomplete="unloadingPoint">
                                 <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți unde a fost plasat automobilul</span>
                             </div>
-
                         </form>
                     </div>
 
                     <div class="card-footer" style="display: flex; justify-content: space-between; width: 100%;">
                         <button type="reset" class="btn btn-md btn-danger" (click)="onReset()"><i class="fa fa-ban"></i>  Reset</button>
-                        <button type="submit" class="btn btn-md btn-success" [disabled]="!date_time || reason.length === 0 || type.length === 0 || registrationNr.length < 4 || loadingPoint.length === 0 || unloadingPoint.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
+                        <button type="submit" class="btn btn-md btn-success" [disabled]="!date_time || reason.length === 0 || type.length === 0 || registrationNr.length < 4 || loadingPoint.length === 0 || unloadingPoint.length === 0|| loading_authority.length === 0" (click)="addEntity()"><i class="fa fa-dot-circle-o"></i>  Salvează</button>
                     </div>
 
                 </div>
@@ -226,11 +228,16 @@
                 </div>
                 <div class="modal-body">
                     <p>Sunteți sigur că vreți să ștergeți entitatea dată?</p>
-                    <strong *ngIf="toDeleteEntity">{{toDeleteEntity.type}}</strong>
+                    <strong *ngIf="toDeleteEntity">{{toDeleteEntity.no_registration}}</strong>
+                </div>
+                <div class="form-group">
+                    <label for="registrationNr">Numărul de înregistrare</label>
+                    <input type="text" placeholder="AAA 001" max="8" maxlength="8" [value]="registrationNr" (keyup)='registrationNr=$event.target.value' class="form-control" id="registrationNr" name="registrationNr" autocomplete="registrationNr">
+                    <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți numărul de înregistrare</span>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Anulează</button>
-                    <button type="button" class="btn btn-danger" (click)="deleteConfirmed()">Șterge</button>
+                    <button type="button" class="btn btn-danger" [disabled]="registrationNr === ''" (click)="deleteConfirmed()">Șterge</button>
                 </div>
             </div>
             <!-- /.modal-content -->
@@ -287,8 +294,10 @@
                     <p>De unde: <strong>{{toExcludeEntity.loading_point}}</strong></p>
                     <p>Motiv: <strong>{{toExcludeEntity.reason}}</strong></p>
                     <p>Unde se află: <strong>{{toExcludeEntity.loading_point}}</strong></p>
-                    <p>Preț: <strong>{{toExcludeEntity.Price}}</strong></p>
-
+                    <p>Unde se află: <strong>{{toExcludeEntity.loading_point}}</strong></p>
+                    <p>Preț Încarcare: <strong>{{toExcludeEntity.loading_price}} Lei</strong></p>
+                    <p>Preț parcare: <strong>{{toExcludeEntity.parking_price}} Lei</strong></p>
+                    <p style="font-weight:bold">Preț Total: <strong>{{toExcludeEntity.price}} Lei</strong></p>
                 </div>
 
                 <div class="modal-body" *ngIf="!toExcludeEntity">
