@@ -220,6 +220,11 @@ export class ParcaredashComponent implements OnInit {
       (res) => {
         alert("Sale Price Saved Successfully Save Successfully !");
         console.log("Sale Price Saved Successfully Save Successfully !")
+      }, (err) => {
+
+      }, () => {
+        this.modalRegistrationNr = this.toExcludeEntity.no_registration;
+        this.triggerSearch(null);
       }
     )
   }
