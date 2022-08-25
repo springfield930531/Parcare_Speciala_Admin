@@ -129,4 +129,11 @@ public getCarReport(durationObj) {
   }
   // END LOGIN + USERS -------------------------------------------------------------------------------------------
 
+  public postUnloadingReason(Id:string,reasonText:string){
+    return this.httpClient.get(`${this.hostIP}/admin/car/${Id}?unloading_reason=${reasonText}`)
+  }
+
+  public postSalePrice(Id:string,salePrice:string){
+    return this.httpClient.get(`${this.hostIP}/admin/car/update-price-sale/${Id}?price_sale=${salePrice}`)
+  }
 }
