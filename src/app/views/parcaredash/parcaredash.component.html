@@ -294,7 +294,6 @@
                     <p>De unde: <strong>{{toExcludeEntity.loading_point}}</strong></p>
                     <p>Motiv: <strong>{{toExcludeEntity.reason}}</strong></p>
                     <p>Unde se află: <strong>{{toExcludeEntity.loading_point}}</strong></p>
-                    <p>Unde se află: <strong>{{toExcludeEntity.loading_point}}</strong></p>
                     <p>Preț Încarcare: <strong>{{toExcludeEntity.loading_price}} Lei</strong></p>
                     <p>Preț parcare: <strong>{{toExcludeEntity.parking_price}} Lei</strong></p>
                     <p style="font-weight:bold">Preț Total: <strong>{{toExcludeEntity.price}} Lei</strong></p>
@@ -307,8 +306,8 @@
 
                 <div class="form-group">
                     <label for="registrationNr">Pret Vanzare</label>
-                    <input type="text" placeholder="Preț de vânzare de ex. 200" max="8" maxlength="8" [value]="sale_price" (keyup)='sale_price=$event.target.value' class="form-control" id="sale_price" name="sale_price" autocomplete="sale_price">
-                    <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți prețul de vânzare</span>
+                    <input type="text" placeholder="Reducere" max="8" maxlength="8" [value]="sale_price" (keyup)='sale_price=$event.target.value' class="form-control" id="sale_price" name="sale_price" autocomplete="sale_price">
+                    <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceti suma reducerii</span>
                 </div>
 
                 <div class="form-group">
@@ -316,17 +315,10 @@
                     <input type="text" placeholder="Reason" max="8" maxlength="8" [value]="unloading_reason" (keyup)='unloading_reason=$event.target.value' class="form-control" id="unloading_reason" name="unloading_reason" autocomplete="unloading_reason">
                     <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți Motivul de descărcare</span>
                 </div>
-
-                <div class="form-group">
-                    <label for="registrationNr">Numărul de înregistrare</label>
-                    <input type="text" placeholder="AAA 001" max="8" maxlength="8" [value]="modalRegistrationNr" (keyup)='modalRegistrationNr=$event.target.value' class="form-control" id="registrationNr" name="registrationNr" autocomplete="registrationNr">
-                    <span class="help-block" style="font-style: italic; font-size: 12px;">Introduceți numărul de înregistrare</span>
-                </div>
-
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" (click)="infoModal.hide()">Închide</button>
-                    <button type="button" class="btn btn-success" (click)="saveSalesPrice()">Actualizați prețul de vânzare</button>
-                    <button type="button" *ngIf="toExclude" class="btn btn-success" (click)="onExclude()">Eliberează</button>
+                    <button type="button" class="btn btn-success" [disabled]="sale_price === ''" (click)="saveSalesPrice()">Actualizați prețul de vânzare</button>
+                    <button type="button" *ngIf="toExclude" class="btn btn-success" [disabled]="unloading_reason === ''" (click)="onExclude()">Eliberează</button>
                 </div>
             </div>
             <!-- /.modal-content -->
