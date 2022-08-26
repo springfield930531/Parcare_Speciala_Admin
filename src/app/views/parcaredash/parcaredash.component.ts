@@ -241,6 +241,7 @@ export class ParcaredashComponent implements OnInit {
     this.registrationNr = "";
     this.loadingPoint = "";
     this.unloadingPoint = "";
+
   }
 
 }
