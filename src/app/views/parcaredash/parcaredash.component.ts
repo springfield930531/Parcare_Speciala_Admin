@@ -152,6 +152,7 @@ export class ParcaredashComponent implements OnInit {
   public async triggerSearch(entity) {
     this.searchModal.hide();
     this.toExcludeEntity = null;
+    this.sale_price = null;
 
     if (entity) { // from the list
       this.toExclude = true;
