@@ -72,8 +72,64 @@ export class ApiService {
 
   // CARS ---------------------------------------------------------------------------------------------------------
 
-  public addCarFn(date_time: any, reason: any, loading_authority: any, type: any, transport_type_id: any, no_registration: any, loading_point: any, place_id: any, unloading_point: any): Observable<any> {
-    return this.httpClient.post(`${this.hostIP}/admin/car`, {date_time: date_time, reason: reason, loading_authority: loading_authority, type: type, transport_type_id: parseInt(transport_type_id), no_registration: no_registration, loading_point: loading_point, place_id: parseInt(place_id), unloading_point: unloading_point})
+  public addCarFn(date_time: any, reason: any, type: any, transport_type_id: any, no_registration: any, loading_point: any, place_id: any, unloading_point: any): Observable<any> {
+    return this.httpClient.post(`${this.hostIP}/admin/car`, { date_time: date_time, reason: reason, type: type, transport_type_id: parseInt(transport_type_id), no_registration: no_registration, loading_point: loading_point, place_id: parseInt(place_id), unloading_point: unloading_point })
+  }
+
+  public getCarFn(): Observable<any> {
+    return this.httpClient.get(`${this.hostIP}/admin/car`)
+  }
+
+  public deleteCarFn(id: any): Observable<any> {
+    return this.httpClient.delete(`${this.hostIP}/admin/car/${id}`)
+  }
+
+  public excludeCarFn(id: any): Observable<any> {
+    return this.httpClient.get(`${this.hostIP}/admin/car/${id}`)
+  }
+
+  public getCarReport(durationObj) {
+    var reqHeader = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('parcareUserToken')
+    });
+    return this.httpClient.post(`http://134.209.90.166:8090/admin/report`, durationObj, { headers: reqHeader })
+  }
+
+  // RegistrationNo ------------------------------------------------------------------------------------------------
+
+  public findRegistrationNoFn(number: any): Observable<any> {
+    return this.httpClient.get(`${this.hostIP}/admin/car/find?RegistrationNo=${number}`)
+  }
+
+  // LOGIN + USERS ----------------------------------------------------------------------------------------------
+  public loginFn(Username: any, Password: any): Observable<any> {
+    return this.httpClient.post(`${this.hostIP}/login`, { Username: Username, Password: Password })
+  }
+
+  public addUserFn(Name: any, Email: any, Password: any): Observable<any> {
+    return this.httpClient.post(`${this.hostIP}/admin/users`, { Name: Name, Password: Password, Email: Email })
+  }
+
+  public updateUserFn(UserID: any, Name: any, Email: any, Password: any): Observable<any> {
+    return this.httpClient.put(`${this.hostIP}/admin/users/${UserID}`, { Name: Name, Password: Password, Email: Email })
+  }
+
+  public getUsersFn(): Observable<any> {
+    return this.httpClient.get(`${this.hostIP}/admin/users`)
+  }
+
+  public getUserByIdFn(UserID: any): Observable<any> {
+    return this.httpClient.get(`${this.hostIP}/admin/users/${UserID}`)
+  }
+
+  public deleteUserByIdFn(UserID: any): Observable<any> {
+    return this.httpClient.delete(`${this.hostIP}/admin/users/${UserID}`)
+  }
+  // END LOGIN + USERS -------------------------------------------------------------------------------------------
+
+}
+
   }
 
   public getCarFn(): Observable<any> {
