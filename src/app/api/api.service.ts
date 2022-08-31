@@ -128,9 +128,6 @@ export class ApiService {
   }
   // END LOGIN + USERS -------------------------------------------------------------------------------------------
 
-}
-
-  }
 
   public getCarFn(): Observable<any> {
     return this.httpClient.get(`${this.hostIP}/admin/car`)
