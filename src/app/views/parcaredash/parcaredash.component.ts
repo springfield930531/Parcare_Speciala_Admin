@@ -31,6 +31,8 @@ export class ParcaredashComponent implements OnInit {
   public toExclude = false;
   public toExcludeEntity = null;
   public modalRegistrationNr = "";
+  public unloading_reason = "";
+  public sale_price = "";
 
   // lists
   public transportTypes = [];
@@ -63,7 +65,7 @@ export class ParcaredashComponent implements OnInit {
 
     try {
       const res = await this.apiService.getCarFn().toPromise();
-      if(res.data && res.data.length > 0) res.data.map(r => this.adjustDate(r));
+      if (res.data && res.data.length > 0) res.data.map(r => this.adjustDate(r));
       this.tableData = res.data;
       const t = await this.apiService.getTransportTypeFn().toPromise();
       this.transportTypes = t.data;
@@ -73,7 +75,7 @@ export class ParcaredashComponent implements OnInit {
       // console.log(this.tableData);
       this.isLoading = false;
     }
-    catch(e) {
+    catch (e) {
       console.log(e);
       this.errorMessage = e.error.error || "A intervenit o eroare";
       this.isLoading = false;
@@ -82,10 +84,10 @@ export class ParcaredashComponent implements OnInit {
 
   // adjusting the date format
   public adjustDate(entity: any) {
-    if(entity.CreatedAt) entity.CreatedAt = new Date(entity.CreatedAt).toLocaleString();
-    if(entity.date_time)  entity.date_time  = new Date(entity.date_time).toLocaleString();
-    if(entity.UpdatedAt) entity.UpdatedAt = new Date(entity.UpdatedAt).toLocaleString();
-    if(entity.DeletedAt) entity.DeletedAt = new Date(entity.DeletedAt).toLocaleString();
+    if (entity.CreatedAt) entity.CreatedAt = new Date(entity.CreatedAt).toLocaleString();
+    if (entity.date_time) entity.date_time = new Date(entity.date_time).toLocaleString();
+    if (entity.UpdatedAt) entity.UpdatedAt = new Date(entity.UpdatedAt).toLocaleString();
+    if (entity.DeletedAt) entity.DeletedAt = new Date(entity.DeletedAt).toLocaleString();
   }
 
   // function to add entity (showing the input)
@@ -94,15 +96,15 @@ export class ParcaredashComponent implements OnInit {
     this.errorMessage = null;
 
     try {
-      const res = await this.apiService.addCarFn(this.date_time, this.reason,this.loading_authority, this.type, this.transportTypeID, this.registrationNr, this.loadingPoint, this.placeID, this.unloadingPoint).toPromise();
-      if(res && res.ID) {
+      const res = await this.apiService.addCarFn(this.date_time, this.reason, this.loading_authority, this.type, this.transportTypeID, this.registrationNr, this.loadingPoint, this.placeID, this.unloadingPoint).toPromise();
+      if (res && res.ID) {
         this.onReset();
         this.showList = true;
         this.getTableData();
       }
       this.activateLoader = false;
     }
-    catch(e) {
+    catch (e) {
       console.log(e);
       this.errorMessage = e.error.error || "A intervenit o eroare";
       this.activateLoader = false;
@@ -123,13 +125,13 @@ export class ParcaredashComponent implements OnInit {
 
     try {
       const res = await this.apiService.deleteCarFn(this.toDeleteEntity.ID).toPromise();
-      if(res) {
+      if (res) {
         this.toDeleteEntity = null;
         this.getTableData();
       }
       this.activateLoader = false;
     }
-    catch(e) {
+    catch (e) {
       console.log(e);
       this.errorMessage = e.error.error || "A intervenit o eroare";
       this.activateLoader = false;
@@ -143,15 +145,16 @@ export class ParcaredashComponent implements OnInit {
     this.toExcludeEntity = null;
     this.searchModal.show();
 
-    if(toExclude) this.toExclude = true;
+    if (toExclude) this.toExclude = true;
   }
 
   // searching based on registration number
   public async triggerSearch(entity) {
     this.searchModal.hide();
     this.toExcludeEntity = null;
+    this.sale_price = null;
 
-    if(entity) { // from the list
+    if (entity) { // from the list
       this.toExclude = true;
       this.toExcludeEntity = entity;
       this.infoModal.show();
@@ -159,17 +162,23 @@ export class ParcaredashComponent implements OnInit {
     else { // searching by number
       this.activateLoader = true;
       this.errorMessage = null;
-  
+
       try {
         const res = await this.apiService.findRegistrationNoFn(this.modalRegistrationNr).toPromise();
-        if(res) {
+        if (res) {
           this.adjustDate(res.data);
           this.toExcludeEntity = res.data;
           this.infoModal.show();
+          if (this.toExcludeEntity.price_sale !== undefined && this.toExcludeEntity.price_sale !== null) {
+            this.sale_price = this.toExcludeEntity.price_sale
+          }
+          if (this.toExcludeEntity.unloading_reason !== undefined && this.toExcludeEntity.unloading_reason !== null) {
+            this.unloading_reason = this.toExcludeEntity.unloading_reason;
+          }
         }
         this.activateLoader = false;
       }
-      catch(e) {
+      catch (e) {
         console.log(e);
         this.errorMessage = e.error.error || "A intervenit o eroare";
         this.activateLoader = false;
@@ -182,20 +191,43 @@ export class ParcaredashComponent implements OnInit {
     this.infoModal.hide();
     this.activateLoader = true;
     this.errorMessage = null;
+    console.log("Sale Price : ", this.sale_price);
+    console.log("Unloading Reason : ", this.unloading_reason)
 
     try {
       const res = await this.apiService.excludeCarFn(this.toExcludeEntity.ID).toPromise();
-      if(res) {
+      if (res) {
         this.toExcludeEntity = null;
         this.getTableData();
       }
       this.activateLoader = false;
+      // Saving Unloading Reason ;
+      this.apiService.postUnloadingReason(this.toExcludeEntity.ID, this.unloading_reason).subscribe(
+        (res) => {
+          console.log("Reason Save Successfully !")
+        }
+      )
     }
-    catch(e) {
+    catch (e) {
       console.log(e);
       this.errorMessage = e.error.error || "A intervenit o eroare";
       this.activateLoader = false;
     }
+  }
+
+  saveSalesPrice() {
+    // Saving Sale Price ;
+    this.apiService.postSalePrice(this.toExcludeEntity.ID, this.sale_price).subscribe(
+      (res) => {
+        alert("Sale Price Saved Successfully Save Successfully !");
+        console.log("Sale Price Saved Successfully Save Successfully !")
+      }, (err) => {
+
+      }, () => {
+        this.modalRegistrationNr = this.toExcludeEntity.no_registration;
+        this.triggerSearch(null);
+      }
+    )
   }
 
   // reset the form
@@ -209,6 +241,7 @@ export class ParcaredashComponent implements OnInit {
     this.registrationNr = "";
     this.loadingPoint = "";
     this.unloadingPoint = "";
+
   }
 
 }

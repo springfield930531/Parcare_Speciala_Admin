@@ -23,6 +23,8 @@ export class ParcareReportingComponent implements OnInit {
   public sidebarMinimized = false;
   public navItems = navItems;
   public tableData = [];
+  public tableDataCopy = [];
+  public totalAmount = 0 ;
   public isLoading = false;
   public activateLoader = false;
   public showList = true;
@@ -73,6 +75,8 @@ export class ParcareReportingComponent implements OnInit {
         if (res.data.Cars && res.data.Cars.length > 0) {
           res.data.Cars.map(r => this.adjustDate(r));
           this.tableData = res.data.Cars
+          this.totalAmount = res.data.Sum
+          this.tableDataCopy = this.tableData;
           console.log(this.tableData)
         }
         this.isLoading = false;
@@ -144,4 +148,16 @@ export class ParcareReportingComponent implements OnInit {
     }
   }
 
+  filterData(flag:string){
+    if(flag == 'active'){
+      this.tableData = this.tableDataCopy.filter(
+        (x)=> x.active == true
+      )
+    }
+    else{
+      this.tableData = this.tableDataCopy.filter(
+        (x)=> x.active == false
+      )
+    }
+  }
 }

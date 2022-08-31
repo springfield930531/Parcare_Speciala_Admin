@@ -42,7 +42,7 @@ export const routes: Routes = [
     component: ParcaredashComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Parcare Orhei'
+      title: 'Parcare Edinet'
     }
   },
   {
@@ -50,7 +50,7 @@ export const routes: Routes = [
     component: ParcareReportingComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Raportare Parcare Orhei'
+      title: 'Raportare Parcare Edinet'
     }
   },
   {
@@ -58,7 +58,7 @@ export const routes: Routes = [
     component: TipTransportComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Parcare Orhei | Tip transport'
+      title: 'Parcare Edinet | Tip transport'
     }
   },
   {
@@ -66,7 +66,7 @@ export const routes: Routes = [
     component: PlaceComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Parcare Orhei | Loc'
+      title: 'Parcare Edinet | Loc'
     }
   },
   {
@@ -74,7 +74,7 @@ export const routes: Routes = [
     component: PricesComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Parcare Orhei | Preturi'
+      title: 'Parcare Edinet | Preturi'
     }
   },
   {
@@ -82,7 +82,7 @@ export const routes: Routes = [
     component: StoragePricesComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Parcare Orhei | Preturi de depozitare'
+      title: 'Parcare Edinet | Preturi de depozitare'
     }
   },
   {
@@ -90,7 +90,7 @@ export const routes: Routes = [
     component: UsersComponent,
     canActivate: [AuthRoutetsGuardService],
     data: {
-      title: 'Parcare Orhei | Redactare Utilizatori'
+      title: 'Parcare Edinet | Redactare Utilizatori'
     }
   },
   

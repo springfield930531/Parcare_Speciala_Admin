@@ -41,7 +41,7 @@
                     </span>
                     <span>
                         <button type="button" class="btn btn-primary" (click)="getTableData()">
-                            Search
+                            Cauta
                         </button>
                     </span>
                 </div>
@@ -81,24 +81,32 @@
 
             <div *ngIf="!isLoading && tableData.length  > 0" class="data-container">
                 <div class="card-body" style="width: 100%;">
-                    <div class="row justify-content-end d-flex">
-                        <p>Showing {{this.tableData.length}} records !</p>
+                    <div class="row justify-content-between align-items-center d-flex">
+                        <!-- <div class="col-2 m-1 d-flex justify-content-evenly align-items-center">
+                            <button class="btn btn-success mx-1 mr-1" (click)="filterData('active')">Filter By Active</button>
+                            <button class="btn btn-danger" (click)="filterData('inactive')">Filter By In-Active</button>
+                        </div> -->
+                        <div class="m-1 d-flex justify-content-between align-items-center">
+                            <p class="p-0 m-0">Showing {{this.tableData.length}} records !</p>
+                            <button class="btn btn-primary mx-1 ml-1"> Suma Totala : {{this.totalAmount}} </button>
+                        </div>
                     </div>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Număr</th>
+                                <th>Număr Inmatriculare</th>
                                 <th>Marcă</th>
                                 <th>Preluat</th>
                                 <th>Punct de încărcare</th>
-                                <th>Autoritatea de încărcare</th>
-                                <th>Preț de încărcare</th>
-                                <th>Preț</th>
-                                <th>Pret Parcare</th>
+                                <th>Autoritatea responsabila</th>
                                 <th>Punct de descarcare</th>
-                                <th>Motivul descarcarii</th>
-                                <th>Pret Vanzare</th>
-                                <th>Exclude Data</th>
+                                <th>Nr. actului VEH 01</th>
+                                <th>Nr. actului VEH 02</th>
+                                <th>Data Eliberării</th>
+                                <th>Preț de încărcare</th>
+                                <th>Suma reducerii</th>
+                                <th>Pret Parcare</th>
+                                <th>Suma Totală</th>
                         </thead>
 
                         <tbody>
@@ -109,13 +117,14 @@
                                 <td *ngIf="!entity.active">{{entity.date_time}}</td>
                                 <td *ngIf="!entity.active">{{entity.loading_point}}</td>
                                 <td *ngIf="!entity.active">{{entity.loading_authority}}</td>
-                                <td *ngIf="!entity.active">{{entity.loading_price}}</td>
-                                <td *ngIf="!entity.active">{{entity.price}}</td>
-                                <td *ngIf="!entity.active">{{entity.parking_price}}</td>
+                                <td *ngIf="!entity.active">{{entity.reason}}</td>
                                 <td *ngIf="!entity.active">{{entity.unloading_point}}</td>
                                 <td *ngIf="!entity.active">{{entity.unloading_reason}}</td>
-                                <td *ngIf="!entity.active">{{entity.price_sale}}</td>
                                 <td *ngIf="!entity.active">{{entity.exclude_date}}</td>
+                                <td *ngIf="!entity.active">{{entity.parking_price}} Lei</td>
+                                <td *ngIf="!entity.active">{{entity.loading_price}} Lei</td>
+                                <td *ngIf="!entity.active">{{entity.price_sale}} Lei</td>
+                                <td *ngIf="!entity.active">{{entity.price}} Lei</td>
                             </tr>
 
                         </tbody>
