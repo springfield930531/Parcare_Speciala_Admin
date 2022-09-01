@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { navItems } from '../../_nav_parcare';
 import { ApiService } from '../../api/api.service';
@@ -228,6 +229,10 @@ export class ParcaredashComponent implements OnInit {
         this.triggerSearch(null);
       }
     )
+  }
+
+  public dateRangeChange(event, tag?) {
+    console.log("Change Detected")
   }
 
   // reset the form
