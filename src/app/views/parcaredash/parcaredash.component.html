@@ -132,7 +132,7 @@
                             <div class="form-group row">
                                 <label class="col-md-3 col-form-label" for="date-input">Data/ora preluării</label>
                                 <div class="col-md-9">
-                                    <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [value]="date_time" (change)='date_time=$event.target.value' class="form-control" id="date-input" type="text" name="date-input" placeholder="date">
+                                    <input [owlDateTimeTrigger]="dt11" [owlDateTime]="dt11" [(ngModel)]="date_time" (dateTimeChange)='dateRangeChange($event)' class="form-control" placeholder="date">
                                     <owl-date-time #dt11></owl-date-time>
                                 </div>
                             </div>

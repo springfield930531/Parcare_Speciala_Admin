@@ -24,7 +24,7 @@ export class ParcareReportingComponent implements OnInit {
   public navItems = navItems;
   public tableData = [];
   public tableDataCopy = [];
-  public totalAmount = 0 ;
+  public totalAmount = 0;
   public isLoading = false;
   public activateLoader = false;
   public showList = true;
@@ -41,8 +41,10 @@ export class ParcareReportingComponent implements OnInit {
   public places = [];
   // form
   public dateTime = new Date();
-  public startDateTime = new Date('2021-09-09T10:00:00Z');
-  public stopDateTime = new Date();
+  public selectedMoments = [
+    new Date(2022, 1, 12, 10, 30),
+    new Date()
+  ];
   public reason = "";
   public type = "";
   public registrationNr = "";
@@ -67,8 +69,8 @@ export class ParcareReportingComponent implements OnInit {
     this.errorMessage = null;
 
     var params = {
-      "start_time": this.startDateTime,
-      "stop_time": this.stopDateTime
+      "start_time": this.selectedMoments[0],
+      "stop_time": this.selectedMoments[1]
     }
     this.apiService.getCarReport(params).subscribe(
       (res: any) => {
@@ -138,25 +140,17 @@ export class ParcareReportingComponent implements OnInit {
 
   public dateRangeChange(event, tag?) {
     console.log("Change Detected")
-    if (tag === 'startDate') {
-      this.startDateTime = event.target.value;
-      this.getTableData();
-    }
-    else if (tag === 'stopDate') {
-      this.stopDateTime = event.target.value;
-      this.getTableData();
-    }
   }
 
-  filterData(flag:string){
-    if(flag == 'active'){
+  filterData(flag: string) {
+    if (flag == 'active') {
       this.tableData = this.tableDataCopy.filter(
-        (x)=> x.active == true
+        (x) => x.active == true
       )
     }
-    else{
+    else {
       this.tableData = this.tableDataCopy.filter(
-        (x)=> x.active == false
+        (x) => x.active == false
       )
     }
   }

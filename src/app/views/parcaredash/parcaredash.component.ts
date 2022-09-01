@@ -231,6 +231,10 @@ export class ParcaredashComponent implements OnInit {
     )
   }
 
+  public dateRangeChange(event, tag?) {
+    console.log("Change Detected")
+  }
+
   // reset the form
   public onReset() {
     this.date_time = new Date();

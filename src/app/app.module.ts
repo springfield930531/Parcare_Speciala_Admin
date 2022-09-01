@@ -53,6 +53,7 @@ import { PricesComponent } from './views/parcare-modules/prices/prices.component
 import { StoragePricesComponent } from './views/parcare-modules/storage-prices/storage-prices.component';
 import { UsersComponent } from './views/parcare-modules/users/users.component';
 import { OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -74,7 +75,9 @@ import { OwlDateTimeModule, OwlNativeDateTimeModule} from 'ng-pick-datetime';
     HttpClientModule,
     ModalModule.forRoot(),
     OwlDateTimeModule,
-    OwlNativeDateTimeModule
+    OwlNativeDateTimeModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,
