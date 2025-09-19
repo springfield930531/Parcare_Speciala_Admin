@@ -91,7 +91,7 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  // function to add entity (showing the input)
+  // Adds a new entry via API, refreshes the list, and resets the form state
   public async addEntity() {
     this.activateLoader = true;
     this.errorMessage = null;
