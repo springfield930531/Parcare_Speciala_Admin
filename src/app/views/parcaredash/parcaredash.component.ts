@@ -196,14 +196,18 @@ export class ParcaredashComponent implements OnInit {
     console.log("Unloading Reason : ", this.unloading_reason)
 
     try {
-      const res = await this.apiService.excludeCarFn(this.toExcludeEntity.ID).toPromise();
+      const entityId = this.toExcludeEntity ? this.toExcludeEntity.ID : null;
+      if (!entityId) {
+        throw new Error('Entity ID missing for exclusion');
+      }
+      const res = await this.apiService.excludeCarFn(entityId).toPromise();
       if (res) {
         this.toExcludeEntity = null;
         this.getTableData();
       }
       this.activateLoader = false;
       // Saving Unloading Reason ;
-      this.apiService.postUnloadingReason(this.toExcludeEntity.ID, this.unloading_reason).subscribe(
+      this.apiService.postUnloadingReason(entityId, this.unloading_reason).subscribe(
         (res) => {
           console.log("Reason Save Successfully !")
         }
