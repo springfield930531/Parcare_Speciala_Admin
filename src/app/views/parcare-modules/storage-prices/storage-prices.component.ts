@@ -68,7 +68,7 @@ export class StoragePricesComponent implements OnInit {
     return this.transportTypes.filter(type => typeId === type.ID)[0].type;
   } 
 
-  // function to add entity (showing the input)
+  // Adds a storage price via API and refreshes the list/UI state
   public async addEntity() {
     this.activateLoader = true;
     this.errorMessage = null;
