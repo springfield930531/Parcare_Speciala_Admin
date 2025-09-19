@@ -87,7 +87,7 @@ export class ApiService {
   public excludeCarFn(id: any): Observable<any> {
     return this.httpClient.get(`${this.hostIP}/admin/car/${id}`)
   }
-// Excell Report ------------------------------------------------------------------------------------------------
+// Excel Report ------------------------------------------------------------------------------------------------
 public getCarReport(durationObj) {
   var reqHeader = new HttpHeaders({
     'Content-Type': 'application/json',
