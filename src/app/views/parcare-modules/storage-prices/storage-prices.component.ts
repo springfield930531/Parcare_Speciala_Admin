@@ -65,8 +65,9 @@ export class StoragePricesComponent implements OnInit {
 
   // transport type filter
   public getTransportNameByID(typeId) {
-    return this.transportTypes.filter(type => typeId === type.ID)[0].type;
-  } 
+    const transportType = this.transportTypes.find(type => typeId === type.ID);
+    return transportType ? transportType.type : 'Tip necunoscut';
+  }
 
   // Adds a storage price via API and refreshes the list/UI state
   public async addEntity() {
