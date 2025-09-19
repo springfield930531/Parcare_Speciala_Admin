@@ -220,8 +220,8 @@ export class ParcaredashComponent implements OnInit {
     // Saving Sale Price ;
     this.apiService.postSalePrice(this.toExcludeEntity.ID, this.sale_price).subscribe(
       (res) => {
-        alert("Sale Price Saved Successfully Save Successfully !");
-        console.log("Sale Price Saved Successfully Save Successfully !")
+        alert("Sale price saved successfully!");
+        console.log("Sale price saved successfully!")
       }, (err) => {
 
       }, () => {
