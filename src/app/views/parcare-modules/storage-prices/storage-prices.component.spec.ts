@@ -22,4 +22,25 @@ describe('StoragePricesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should return transport type name for a known ID', () => {
+    component.transportTypes = [
+      { ID: 1, type: 'Autoturism' },
+      { ID: 2, type: 'Autobuz' }
+    ] as any;
+
+    const result = component.getTransportNameByID(2);
+
+    expect(result).toBe('Autobuz');
+  });
+
+  it('should return fallback for unknown transport type ID', () => {
+    component.transportTypes = [
+      { ID: 1, type: 'Autoturism' }
+    ] as any;
+
+    const result = component.getTransportNameByID(3);
+
+    expect(result).toBe('Tip necunoscut');
+  });
 });
