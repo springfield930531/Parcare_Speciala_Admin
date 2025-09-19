@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
+import { getStyle, hexToRgba } from '@coreui/utils';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 
 @Component({
